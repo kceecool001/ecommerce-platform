@@ -1,0 +1,74 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test-product:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Test Product Service
+        run: docker-compose run product-service npm test
+
+  test-user:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Test User Service
+        run: docker-compose run user-service npm test
+
+  test-order:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Test Order Service
+        run: docker-compose run order-service npm test
+ 
+  test-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Test Frontend
+        run: docker-compose run frontend npm test
+
+  build-and-push:
+    needs: [test-product, test-user, test-order, test-frontend]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Log in to Quay.io
+      run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login quay.io -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+    - name: Build and Push Product Service
+      run: |
+        docker build -t quay.io/${{ secrets.QUAY_USERNAME }}/product-service:${{ github.sha }} ./services/product-service
+        docker push quay.io/${{ secrets.QUAY_USERNAME }}/product-service:${{ github.sha }}
+
+    - name: Build and Push User Service
+      run: |
+        docker build -t quay.io/${{ secrets.QUAY_USERNAME }}/user-service:${{ github.sha }} ./services/user-service
+        docker push quay.io/${{ secrets.QUAY_USERNAME }}/user-service:${{ github.sha }}
+
+    - name: Build and Push Order Service
+      run: |
+        docker build -t quay.io/${{ secrets.QUAY_USERNAME }}/order-service:${{ github.sha }} ./services/order-service
+        docker push quay.io/${{ secrets.QUAY_USERNAME }}/order-service:${{ github.sha }}
+
+    - name: Build and Push Frontend
+      run: |
+        docker build -t quay.io/${{ secrets.QUAY_USERNAME }}/frontend:${{ github.sha }} ./frontend
+        docker push quay.io/${{ secrets.QUAY_USERNAME }}/frontend:${{ github.sha }}
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update Kubernetes manifests
+        run: |
+          # Update image tags in k8s/base/product-service.yaml
+          # Commit changes to GitOps repo

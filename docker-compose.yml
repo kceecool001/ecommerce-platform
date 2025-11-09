@@ -1,0 +1,40 @@
+version: '3.8'
+services:
+  product-service:
+    build: ./services/product-service
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./services/product-service:/app
+    networks:
+      - ecommerce-net
+
+  user-service:
+    build: ./services/user-service
+    ports:
+      - "3002:3002"
+    volumes:
+      - ./services/user-service:/app
+    networks:
+      - ecommerce-net
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "80:80"
+    networks:
+      - ecommerce-net
+
+  order-service:
+    build: ./services/order-service
+    ports:
+      - "3003:3003"
+    volumes:
+      - ./services/order-service:/app
+    networks:
+      - ecommerce-net
+
+
+networks:
+  ecommerce-net:
+    driver: bridge

@@ -10,6 +10,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "test": "echo \"No tests yet\" && exit 0",
     "build": "react-scripts build"
   }
 }

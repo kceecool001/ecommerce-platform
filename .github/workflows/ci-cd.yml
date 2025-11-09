@@ -80,7 +80,7 @@ jobs:
     - name: Build and Push Frontend
       run: |
         docker buildx build --push \
-        -t quay.io/${{ secrets.QUAY_USERNAME }}/frontend:${{ github.sha }} 
+        -t quay.io/${{ secrets.QUAY_USERNAME }}/frontend:${{ github.sha }} \
         ./frontend
 
   deploy:

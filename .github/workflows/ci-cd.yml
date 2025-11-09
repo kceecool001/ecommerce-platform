@@ -18,28 +18,28 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Test Product Service
-        run: docker-compose run product-service npm test
+        run: docker compose run product-service npm test
 
   test-user:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Test User Service
-        run: docker-compose run user-service npm test
+        run: docker compose run user-service npm test
 
   test-order:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Test Order Service
-        run: docker-compose run order-service npm test
+        run: docker compose run order-service npm test
  
   test-frontend:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Test Frontend
-        run: docker-compose run frontend npm test
+        run: docker compose run frontend npm test
 
   build-and-push:
     needs: [test-product, test-user, test-order, test-frontend]

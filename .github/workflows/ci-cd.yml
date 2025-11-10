@@ -61,31 +61,31 @@ jobs:
 
     - name: Build and Push Product Service
       run: |
-        docker buildx build --platform linux/amd64, linux/arm64 --push \
+        docker buildx build --platform linux/amd64,linux/arm64 \
         -t quay.io/${{ secrets.QUAY_USERNAME }}/product-service:latest \
         -t quay.io/${{ secrets.QUAY_USERNAME }}/product-service:${{ github.sha }} \
-        ./services/product-service
+        ./services/product-service --push
 
     - name: Build and Push User Service
       run: |
-         docker buildx build --platform linux/amd64, linux/arm64 --push \
+         docker buildx build --platform linux/amd64,linux/arm64 \
          -t quay.io/${{ secrets.QUAY_USERNAME }}/user-service:latest \
          -t quay.io/${{ secrets.QUAY_USERNAME }}/user-service:${{ github.sha }} \
-         ./services/user-service
+         ./services/user-service --push
 
     - name: Build and Push Order Service
       run: |
-        docker buildx build --platform linux/amd64, linux/arm64 --push \
+        docker buildx build --platform linux/amd64,linux/arm64 \
         -t quay.io/${{ secrets.QUAY_USERNAME }}/order-service:latest \
         -t quay.io/${{ secrets.QUAY_USERNAME }}/order-service:${{ github.sha }} \
-        ./services/order-service
+        ./services/order-service --push
 
     - name: Build and Push Frontend
       run: |
-        docker buildx build --platform linux/amd64, linux/arm64 --push \
+        docker buildx build --platform linux/amd64,linux/arm64 \
         -t quay.io/${{ secrets.QUAY_USERNAME }}/frontend:latest \
         -t quay.io/${{ secrets.QUAY_USERNAME }}/frontend:${{ github.sha }} \
-        ./frontend
+        ./frontend --push
 
   deploy:
     needs: build-and-push

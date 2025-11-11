@@ -13,6 +13,9 @@ spec:
     metadata:
       labels:
         app: product-service
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "3000"
     spec:
       containers:
         - name: product-service

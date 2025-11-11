@@ -1,25 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: user-service
-  labels:
-    app: user-service
+  name: grafana
+  namespace: monitoring
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: user-service
+      app: grafana
   template:
     metadata:
       labels:
-        app: user-service
-      annotations:
-        prometheus.io/scrape: "true"
-        prometheus.io/port: "3000"
+        app: grafana
     spec:
       containers:
-        - name: user-service
-          image: quay.io/kceecool/user-service:latest
+        - name: grafana
+          image: grafana/grafana
           ports:
             - containerPort: 3000
           resources:
@@ -28,4 +24,4 @@ spec:
               memory: "128Mi"
             limits:
               cpu: "500m"
-              memory: "256Mi"
+              memory: "512Mi"

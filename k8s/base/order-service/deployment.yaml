@@ -15,14 +15,14 @@ spec:
         app: order-service
       annotations:
         prometheus.io/scrape: "true"
-        prometheus.io/port: "3000"
+        prometheus.io/port: "3003"
         prometheus.io/path: "/metrics"
     spec:
       containers:
         - name: order-service
           image: quay.io/kceecool/order-service:latest
           ports:
-            - containerPort: 3000
+            - containerPort: 3003
           resources:
             limits:
               cpu: "500m"

@@ -15,14 +15,14 @@ spec:
         app: user-service
       annotations:
         prometheus.io/scrape: "true"
-        prometheus.io/port: "3000"
+        prometheus.io/port: "3002"
         prometheus.io/path: "/metrics"
     spec:
       containers:
         - name: user-service
           image: quay.io/kceecool/user-service:latest
           ports:
-            - containerPort: 3000
+            - containerPort: 3002
           resources:
             requests:
               cpu: "100m"

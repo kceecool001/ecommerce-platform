@@ -5,7 +5,7 @@ metadata:
   namespace: ecommerce
   annotations:
     prometheus.io/scrape: "true"
-    prometheus.io/port: "3000"
+    prometheus.io/port: "3002"
     prometheus.io/path: "/metrics"
   labels:
     app: user-service
@@ -15,5 +15,5 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 3000
+      targetPort: 3002
   type: ClusterIP

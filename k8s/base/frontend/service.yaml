@@ -3,17 +3,14 @@ kind: Service
 metadata:
   name: frontend
   namespace: ecommerce
-  annotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "80"
-    prometheus.io/path: "/metrics"
   labels:
     app: frontend
 spec:
   selector:
     app: frontend
   ports:
-    - protocol: TCP
+    - name: http
+      protocol: TCP
       port: 80
       targetPort: 80
   type: ClusterIP

@@ -3,10 +3,6 @@ kind: Service
 metadata:
   name: product-service
   namespace: ecommerce
-  annotations:
-    prometheus.io/scrape: "true"
-    prometheus.io/port: "3001"
-    prometheus.io/path: "/metrics"
   labels:
     app: product-service
 spec:
@@ -14,6 +10,6 @@ spec:
     app: product-service
   ports:
     - protocol: TCP
-      port: 80
+      port: 3001
       targetPort: 3001
   type: ClusterIP

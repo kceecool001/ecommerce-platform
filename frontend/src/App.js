@@ -1,42 +1,25 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import AuthForm from './AuthForm';
 
-function AuthForm({ onLogin }) {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-
-  const register = async () => {
-    try {
-      await axios.post('http://localhost:3002/register', { username, password });
-      alert('Registered successfully!');
-    } catch (err) {
-      alert(err.response?.data || 'Registration failed');
-    }
-  };
-
-  const login = async () => {
-    try {
-      const res = await axios.post('http://localhost:3002/login', { username, password });
-      const token = res.data.token;
-      localStorage.setItem('token', token); // Store token
-      alert('Logged in successfully!');
-      onLogin(token); // Pass token to parent
-    } catch (err) {
-      alert(err.response?.data || 'Login failed');
-    }
-  };
+function App() {
+  const [token, setToken] = useState(localStorage.getItem('token') || null);
 
   return (
     <div>
-      <h2>Authentication</h2>
-      <input placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} />
-      <input placeholder="Password" type="password" value={password} onChange={e => setPassword(e.target.value)} />
-      <div>
-        <button onClick={register}>Register</button>
-        <button onClick={login}>Login</button>
-      </div>
+      <h1>Welcome to the E-Commerce Platform</h1>
+      {!token ? (
+        <AuthForm onLogin={setToken} />
+      ) : (
+        <div>
+          <p>Logged in! Token stored.</p>
+          <button onClick={() => { localStorage.removeItem('token'); setToken(null); }}>
+            Logout
+          </button>
+        </div>
+      )}
     </div>
   );
 }
 
-export default AuthForm;
+export default App;
+
